@@ -236,7 +236,7 @@ async function onSubmit(e) {
 
   // The install-to-eMMC checkbox is only meaningful when the selected
   // recipe declares an install block — otherwise we force it false so
-  // _common.yaml's {{#install_to_emmc}} section doesn't render.
+  // _common.yaml's `when: install_to_emmc` section doesn't render.
   const installBlock = recipe.install || null;
   const installToEmmc =
     !!installBlock && $("#sensorbox-install-to-emmc").checked;
@@ -261,7 +261,7 @@ async function onSubmit(e) {
   // Scandump is the tool WEPro actually drives, so usb_diagnostic
   // implies scandump_enabled. The Zero2 recipe's usb_diagnostic
   // section relies on the /usr/bin/scandump wrapper that the
-  // _common.yaml {{#scandump_enabled}} block installs.
+  // _common.yaml `when: scandump_enabled` section installs.
   const usbDiagnosticEnabled = selectedOptions.usb_diagnostic === "enabled";
   const scandumpEnabled =
     $("#sensorbox-scandump-enabled").checked || usbDiagnosticEnabled;
@@ -281,8 +281,8 @@ async function onSubmit(e) {
     // repository_keys — enforced by convention, not schema, today.
     orb_apk_key: keyContents[0] || "",
     // Wi-Fi config — only meaningful for recipes with capabilities.wifi.
-    // The recipe's defaults template uses {{#wifi_ssid}} as a section
-    // guard so the whole Wi-Fi block is omitted when SSID is empty.
+    // _common.yaml gates its Wi-Fi section on `when: wifi_ssid`, so the
+    // whole Wi-Fi block is omitted when SSID is empty.
     wifi_ssid: $("#sensorbox-wifi-ssid").value.trim(),
     wifi_password: $("#sensorbox-wifi-password").value,
     wifi_encryption: $("#sensorbox-wifi-encryption").value,
@@ -308,15 +308,15 @@ async function onSubmit(e) {
       }[$("#sensorbox-wifi-band").value] || "HE80",
     // Installer config — mirrored from the recipe's install block
     // into flat Mustache variables that _common.yaml's installer
-    // heredoc interpolates. Empty strings when the recipe has no
-    // install block (in which case install_to_emmc is also false
-    // and the whole block gets elided by the Mustache section).
+    // init script (a `template: true` file) interpolates. Empty strings
+    // when the recipe has no install block (in which case
+    // install_to_emmc is also false and the whole section is skipped).
     install_to_emmc: installToEmmc,
     install_sd_device: installBlock?.sd_device || "",
     install_emmc_device: installBlock?.emmc_device || "",
     install_size_from_partition: installBlock?.size_from_partition || "",
     install_status_led: installBlock?.status_led || "",
-    // System telemetry — _common.yaml's {{#telemetry_enabled}} section
+    // System telemetry — _common.yaml's `when: telemetry_enabled` section
     // wraps the entire telegraf install/config block.
     telemetry_enabled: telemetryEnabled,
     telemetry_url: $("#sensorbox-telemetry-url").value.trim(),
@@ -329,19 +329,19 @@ async function onSubmit(e) {
     // helper ahead of the generic hwmon scan; if it `exit 0`s on
     // success, the generic scan is skipped.
     wifi_temp_probe_override: wifiTempProbeOverride,
-    // Tailscale — _common.yaml's {{#tailscale_enabled}} section runs
+    // Tailscale — _common.yaml's `when: tailscale_enabled` section runs
     // `tailscale up --auth-key=... --hostname=<Orb-NNNN> --ssh` on
     // first boot. Auth key is the only user-supplied value.
     tailscale_enabled: tailscaleEnabled,
     tailscale_auth_key: tailscaleAuthKey,
-    // Docker — _common.yaml's {{#docker_enabled}} section enables
+    // Docker — _common.yaml's `when: docker_enabled` section enables
     // the dockerd init.d so the daemon starts at boot. The userspace
     // packages (dockerd, docker CLI, docker-compose) come in via the
     // build request's package list; on the Zero2 the required kmods
     // are baked in via zero2.defconfig, on stock-kernel boards they
     // come from upstream feeds.
     docker_enabled: dockerEnabled,
-    // scandump — _common.yaml's {{#scandump_enabled}} section installs
+    // scandump — _common.yaml's `when: scandump_enabled` section installs
     // a /usr/bin/scandump wrapper around the ghcr.io/dboze/scandump
     // container, plus a one-shot init.d that pre-pulls the image when
     // network comes up. Implies docker_enabled (the wrapper is a thin
