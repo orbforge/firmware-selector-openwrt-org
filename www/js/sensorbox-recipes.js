@@ -14,13 +14,17 @@ import { show, hide } from "./utils.js";
 const RECIPES_BASE = "/recipes";
 
 export async function loadAllRecipes() {
-  const indexRes = await fetch(`${RECIPES_BASE}/index.json`, { cache: "no-cache" });
+  const indexRes = await fetch(`${RECIPES_BASE}/index.json`, {
+    cache: "no-cache",
+  });
   if (!indexRes.ok) {
     throw new Error(`fetch index.json: HTTP ${indexRes.status}`);
   }
   const index = await indexRes.json();
 
-  const commonRes = await fetch(`${RECIPES_BASE}/${index.common}`, { cache: "no-cache" });
+  const commonRes = await fetch(`${RECIPES_BASE}/${index.common}`, {
+    cache: "no-cache",
+  });
   if (!commonRes.ok) {
     throw new Error(`fetch ${index.common}: HTTP ${commonRes.status}`);
   }
@@ -106,7 +110,9 @@ export function mergedPackages(common, recipe, selectedOptions) {
 export async function resolveKeys(keyFilenames) {
   const contents = [];
   for (const name of keyFilenames) {
-    const res = await fetch(`${RECIPES_BASE}/keys/${name}`, { cache: "no-cache" });
+    const res = await fetch(`${RECIPES_BASE}/keys/${name}`, {
+      cache: "no-cache",
+    });
     if (!res.ok) {
       throw new Error(`fetch keys/${name}: HTTP ${res.status}`);
     }
