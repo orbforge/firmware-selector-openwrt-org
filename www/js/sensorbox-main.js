@@ -449,6 +449,15 @@ function renderOptions(recipe) {
     }
     div.appendChild(select);
 
+    // Optional note under the dropdown, styled like the install hint, for
+    // caveats a label can't carry (e.g. a USB 2.0-only port).
+    if (opt.hint) {
+      const hint = document.createElement("p");
+      hint.className = "sensorbox-hint";
+      hint.textContent = opt.hint;
+      div.appendChild(hint);
+    }
+
     container.appendChild(div);
   }
 }
