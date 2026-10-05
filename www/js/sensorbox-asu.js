@@ -38,7 +38,11 @@ export async function submitBuild(buildRequest, recipe) {
 
   if (res.status !== 202 && res.status !== 200) {
     const body = await res.text();
-    setStatus(statusEl, `ASU rejected the request (HTTP ${res.status}):\n${body}`, "error");
+    setStatus(
+      statusEl,
+      `ASU rejected the request (HTTP ${res.status}):\n${body}`,
+      "error"
+    );
     buildButton.disabled = false;
     return;
   }
@@ -46,17 +50,24 @@ export async function submitBuild(buildRequest, recipe) {
   let data = await res.json();
   const requestHash = data.request_hash;
   if (!requestHash) {
-    setStatus(statusEl, `ASU response has no request_hash:\n${JSON.stringify(data, null, 2)}`, "error");
+    setStatus(
+      statusEl,
+      `ASU response has no request_hash:\n${JSON.stringify(data, null, 2)}`,
+      "error"
+    );
     buildButton.disabled = false;
     return;
   }
 
   // Poll until done or failed. ASU returns 202 while working, 200 when
   // the build is complete, and 5xx (with a detail/stderr body) on failure.
-  while (true) {
+  for (;;) {
     setStatus(statusEl, formatStatus(data));
 
-    if (data.imagebuilder_status === "done" || (data.images && data.images.length)) {
+    if (
+      data.imagebuilder_status === "done" ||
+      (data.images && data.images.length)
+    ) {
       renderDownloads(data, downloadListEl, recipe);
       show(downloadsEl);
       setStatus(statusEl, "Build complete.", "success");
@@ -72,7 +83,9 @@ export async function submitBuild(buildRequest, recipe) {
     }
 
     await sleep(POLL_INTERVAL_MS);
-    const pollRes = await fetch(`${API_BASE}/build/${requestHash}`, { cache: "no-cache" });
+    const pollRes = await fetch(`${API_BASE}/build/${requestHash}`, {
+      cache: "no-cache",
+    });
     data = await pollRes.json();
   }
 }
@@ -86,7 +99,8 @@ function isFailure(data) {
 function formatFailure(data) {
   const parts = [];
   if (data.detail) parts.push(data.detail);
-  if (data.imagebuilder_status) parts.push(`imagebuilder_status=${data.imagebuilder_status}`);
+  if (data.imagebuilder_status)
+    parts.push(`imagebuilder_status=${data.imagebuilder_status}`);
   let msg = `Build failed.\n${parts.join("\n")}`;
   if (data.stderr) {
     msg += "\n\n" + data.stderr;

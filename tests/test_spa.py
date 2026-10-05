@@ -1,28 +1,22 @@
 from playwright.sync_api import sync_playwright, expect
 
+
 def test_spa(simplehttpserver):
+    # sensorbox replaces upstream's selector UI. The recipes it lists are
+    # served by sensorbox's own nginx (/recipes/), which this static server
+    # does not provide, so the page reports that it could not load them.
+    # That still proves the page and its modules load without script errors.
     with sync_playwright() as p:
         browser = p.firefox.launch()
         page = browser.new_page()
+        errors = []
+        page.on("pageerror", lambda err: errors.append(str(err)))
         page.goto("http://localhost:8000/www/")
-        assert "OpenWrt Firmware Selector" in page.title()
+        assert "sensorbox" in page.title()
 
-        assert page.locator("#versions").select_option("19.07.10")[0] == "19.07.10"
-
-        page.fill("#models", "a7 v5")
-        models = page.inner_text("#models-autocomplete-list")
-        assert "TP-Link Archer A7 v5" in models
-
-        locator = page.locator("xpath=/html/body/div/div/p")
-        expect(locator).to_contain_text('Type the name or model of your device')
-
-        page.select_option("#languages-select", "Deutsch (German)")
-        expect(locator).to_contain_text('benutze die Eingabe um die passende')
-
-        page.select_option("#languages-select", "ca")
-        expect(locator).to_contain_text('el nom o el model del vostre dispositiu')
-
-        page.select_option("#languages-select", "Polski (Polish)")
-        expect(locator).to_contain_text('nazwę lub model swojego urządzenia')
+        expect(page.locator("#sensorbox-device")).to_be_visible()
+        expect(page.locator("#sensorbox-build")).to_be_disabled()
+        expect(page.locator("body")).to_contain_text("Failed to load recipes")
+        assert errors == []
 
         browser.close()

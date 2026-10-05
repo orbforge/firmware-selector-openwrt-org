@@ -178,7 +178,10 @@ async function onSubmit(e) {
     const statusEl = $("#sensorbox-status");
     show(statusEl);
     statusEl.innerText = "Checking custom ImageBuilder status...";
-    statusEl.classList.remove("sensorbox-status-error", "sensorbox-status-success");
+    statusEl.classList.remove(
+      "sensorbox-status-error",
+      "sensorbox-status-success"
+    );
 
     try {
       let res = await fetch(`/builder/status/${recipe.custom_branch}`);
@@ -187,8 +190,11 @@ async function onSubmit(e) {
       if (!status.ready) {
         if (!status.building) {
           // Trigger the build
-          await fetch(`/builder/build/${recipe.custom_branch}`, { method: "POST" });
-          statusEl.innerText = "Building custom ImageBuilder — this takes ~45 minutes...";
+          await fetch(`/builder/build/${recipe.custom_branch}`, {
+            method: "POST",
+          });
+          statusEl.innerText =
+            "Building custom ImageBuilder — this takes ~45 minutes...";
         }
 
         // Poll until ready
@@ -241,7 +247,8 @@ async function onSubmit(e) {
   const selectedOptions = collectSelectedOptions(recipe);
   const wifiModuleKey = selectedOptions.wifi_module;
   const wifiTempProbeOverride =
-    recipe.options?.wifi_module?.choices?.[wifiModuleKey]?.wifi_temp_probe || "";
+    recipe.options?.wifi_module?.choices?.[wifiModuleKey]?.wifi_temp_probe ||
+    "";
 
   // Telemetry: only meaningful when the enable checkbox is checked.
   // Empty fields are tolerated (trust the user); a misconfigured
@@ -261,7 +268,8 @@ async function onSubmit(e) {
   // scandump implies docker — the wrapper is just `docker run ...`.
   // Treat the scandump checkbox as a docker-enabled superset to avoid
   // shipping a broken /usr/bin/scandump with no docker to back it.
-  const dockerEnabled = $("#sensorbox-docker-enabled").checked || scandumpEnabled;
+  const dockerEnabled =
+    $("#sensorbox-docker-enabled").checked || scandumpEnabled;
 
   const formValues = {
     orb_token: $("#sensorbox-token").value.trim(),
@@ -278,16 +286,26 @@ async function onSubmit(e) {
     wifi_ssid: $("#sensorbox-wifi-ssid").value.trim(),
     wifi_password: $("#sensorbox-wifi-password").value,
     wifi_encryption: $("#sensorbox-wifi-encryption").value,
-    wifi_country: ($("#sensorbox-wifi-country").value || "US").toUpperCase().trim(),
+    wifi_country: ($("#sensorbox-wifi-country").value || "US")
+      .toUpperCase()
+      .trim(),
     // Band lock: "auto" roams across all bands via scan_list;
     // locked bands set the radio directly with no scan_list.
     wifi_band_auto: $("#sensorbox-wifi-band").value === "auto",
-    wifi_radio_band: {
-      auto: "5g", "2g": "2g", "5g": "5g", "6g": "6g",
-    }[$("#sensorbox-wifi-band").value] || "5g",
-    wifi_radio_htmode: {
-      auto: "HE80", "2g": "HE20", "5g": "HE80", "6g": "EHT80",
-    }[$("#sensorbox-wifi-band").value] || "HE80",
+    wifi_radio_band:
+      {
+        auto: "5g",
+        "2g": "2g",
+        "5g": "5g",
+        "6g": "6g",
+      }[$("#sensorbox-wifi-band").value] || "5g",
+    wifi_radio_htmode:
+      {
+        auto: "HE80",
+        "2g": "HE20",
+        "5g": "HE80",
+        "6g": "EHT80",
+      }[$("#sensorbox-wifi-band").value] || "HE80",
     // Installer config — mirrored from the recipe's install block
     // into flat Mustache variables that _common.yaml's installer
     // heredoc interpolates. Empty strings when the recipe has no
@@ -304,7 +322,8 @@ async function onSubmit(e) {
     telemetry_url: $("#sensorbox-telemetry-url").value.trim(),
     telemetry_username: $("#sensorbox-telemetry-username").value.trim(),
     telemetry_password: $("#sensorbox-telemetry-password").value,
-    telemetry_include_wireless: $("#sensorbox-telemetry-include-wireless").checked,
+    telemetry_include_wireless: $("#sensorbox-telemetry-include-wireless")
+      .checked,
     // Verbatim shell snippet from the selected Wi-Fi module's
     // wifi_temp_probe field (if any). Substituted into the wifi-temp.sh
     // helper ahead of the generic hwmon scan; if it `exit 0`s on
@@ -340,7 +359,7 @@ async function onSubmit(e) {
     for (const [optName, opt] of Object.entries(recipe.options)) {
       const chosen = selectedOptions[optName];
       for (const choiceKey of Object.keys(opt.choices || {})) {
-        formValues[`${optName}_${choiceKey}`] = (choiceKey === chosen);
+        formValues[`${optName}_${choiceKey}`] = choiceKey === chosen;
       }
     }
   }

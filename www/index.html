@@ -15,8 +15,25 @@
   <body>
     <header>
       <div>
-        <a href="https://github.com/orbforge/sensorbox" style="display: flex; align-items: center; gap: 0.5em; text-decoration: none;">
-          <span style="font-family: Lexend, sans-serif; font-size: 1.4em; font-weight: 300; color: #7a2fd0; letter-spacing: -0.02em;">sensorbox</span>
+        <a
+          href="https://github.com/orbforge/sensorbox"
+          style="
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            text-decoration: none;
+          "
+        >
+          <span
+            style="
+              font-family: Lexend, sans-serif;
+              font-size: 1.4em;
+              font-weight: 300;
+              color: #7a2fd0;
+              letter-spacing: -0.02em;
+            "
+            >sensorbox</span
+          >
         </a>
       </div>
     </header>
@@ -27,9 +44,11 @@
       <div>
         <h2>Customize your sensorbox</h2>
         <p>
-          Pick a supported device, configure and customize it, and get a ready-to-flash sensorbox image.
-          See the
-          <a href="https://github.com/orbforge/sensorbox/blob/main/GOALS.md">project goals</a>
+          Pick a supported device, configure and customize it, and get a
+          ready-to-flash sensorbox image. See the
+          <a href="https://github.com/orbforge/sensorbox/blob/main/GOALS.md"
+            >project goals</a
+          >
           for what sensorbox is and isn't.
         </p>
 
@@ -68,10 +87,18 @@
                 required
                 autocomplete="new-password"
               />
-              <button type="button" class="sensorbox-toggle-pw" data-target="sensorbox-root-password" title="Show/hide password">show</button>
+              <button
+                type="button"
+                class="sensorbox-toggle-pw"
+                data-target="sensorbox-root-password"
+                title="Show/hide password"
+              >
+                show
+              </button>
             </div>
             <p class="sensorbox-hint">
-              Used for remote PCAPs and emergency SSH access. sensorbox devices are designed to be reflashed, not reconfigured
+              Used for remote PCAPs and emergency SSH access. sensorbox devices
+              are designed to be reflashed, not reconfigured
             </p>
           </div>
 
@@ -95,7 +122,14 @@
                   placeholder="Password for the network above"
                   autocomplete="off"
                 />
-                <button type="button" class="sensorbox-toggle-pw" data-target="sensorbox-wifi-password" title="Show/hide password">show</button>
+                <button
+                  type="button"
+                  class="sensorbox-toggle-pw"
+                  data-target="sensorbox-wifi-password"
+                  title="Show/hide password"
+                >
+                  show
+                </button>
               </div>
             </div>
             <div>
@@ -115,9 +149,13 @@
                 value="US"
                 maxlength="2"
                 placeholder="US"
-                style="width: 5em; text-transform: uppercase;"
+                style="width: 5em; text-transform: uppercase"
               />
-              <span class="sensorbox-hint" style="display: inline; margin-left: 0.5em;">2-letter country code (US, GB, DE, JP, AU, etc.)</span>
+              <span
+                class="sensorbox-hint"
+                style="display: inline; margin-left: 0.5em"
+                >2-letter country code (US, GB, DE, JP, AU, etc.)</span
+              >
             </div>
             <div>
               <label for="sensorbox-wifi-encryption">Security</label>
@@ -140,11 +178,16 @@
           <details id="sensorbox-telemetry">
             <summary>System telemetry (optional)</summary>
             <p class="sensorbox-hint">
-              Push CPU, memory, disk, and temperature metrics from this probe
-              to a self-hosted
-              <a href="https://github.com/orbforge/orb-local-analytics" target="_blank" rel="noopener">orb-local-analytics</a>
-              stack. Credentials are baked into the image and cannot be
-              changed without reflashing.
+              Push CPU, memory, disk, and temperature metrics from this probe to
+              a self-hosted
+              <a
+                href="https://github.com/orbforge/orb-local-analytics"
+                target="_blank"
+                rel="noopener"
+                >orb-local-analytics</a
+              >
+              stack. Credentials are baked into the image and cannot be changed
+              without reflashing.
             </p>
             <label class="sensorbox-checkbox-label">
               <input type="checkbox" id="sensorbox-telemetry-enabled" />
@@ -179,15 +222,26 @@
                     type="password"
                     autocomplete="off"
                   />
-                  <button type="button" class="sensorbox-toggle-pw" data-target="sensorbox-telemetry-password" title="Show/hide password">show</button>
+                  <button
+                    type="button"
+                    class="sensorbox-toggle-pw"
+                    data-target="sensorbox-telemetry-password"
+                    title="Show/hide password"
+                  >
+                    show
+                  </button>
                 </div>
               </div>
               <label class="sensorbox-checkbox-label">
-                <input type="checkbox" id="sensorbox-telemetry-include-wireless" />
+                <input
+                  type="checkbox"
+                  id="sensorbox-telemetry-include-wireless"
+                />
                 <span>Include Wi-Fi link stats (signal/bitrate/etc.)</span>
               </label>
               <p class="sensorbox-hint">
-                Wi-Fi link stats are redundant with Orb's own wifi_link dataset; leave off unless running without Orb.
+                Wi-Fi link stats are redundant with Orb's own wifi_link dataset;
+                leave off unless running without Orb.
               </p>
             </div>
           </details>
@@ -195,11 +249,16 @@
           <details id="sensorbox-tailscale">
             <summary>Tailscale (optional)</summary>
             <p class="sensorbox-hint">
-              Join the device to your tailnet on first boot. Hostname is set
-              to the auto-generated <code>Orb-NNNN</code> and Tailscale SSH
-              is enabled (so you can SSH via tailnet identity without
-              exposing dropbear publicly). Generate an auth key at
-              <a href="https://login.tailscale.com/admin/settings/keys" target="_blank" rel="noopener">login.tailscale.com/admin/settings/keys</a>.
+              Join the device to your tailnet on first boot. Hostname is set to
+              the auto-generated <code>Orb-NNNN</code> and Tailscale SSH is
+              enabled (so you can SSH via tailnet identity without exposing
+              dropbear publicly). Generate an auth key at
+              <a
+                href="https://login.tailscale.com/admin/settings/keys"
+                target="_blank"
+                rel="noopener"
+                >login.tailscale.com/admin/settings/keys</a
+              >.
             </p>
             <label class="sensorbox-checkbox-label">
               <input type="checkbox" id="sensorbox-tailscale-enabled" />
@@ -216,7 +275,14 @@
                     placeholder="tskey-auth-..."
                     spellcheck="false"
                   />
-                  <button type="button" class="sensorbox-toggle-pw" data-target="sensorbox-tailscale-authkey" title="Show/hide auth key">show</button>
+                  <button
+                    type="button"
+                    class="sensorbox-toggle-pw"
+                    data-target="sensorbox-tailscale-authkey"
+                    title="Show/hide auth key"
+                  >
+                    show
+                  </button>
                 </div>
                 <p class="sensorbox-hint">
                   Burned into the image. Reflash to change.
@@ -240,13 +306,21 @@
 
             <label class="sensorbox-checkbox-label">
               <input type="checkbox" id="sensorbox-scandump-enabled" />
-              <span>Install scandump (Wi-Fi passive scan to PCAP, via container)</span>
+              <span
+                >Install scandump (Wi-Fi passive scan to PCAP, via
+                container)</span
+              >
             </label>
             <p class="sensorbox-hint">
               Adds a <code>/usr/bin/scandump</code> wrapper around
-              <a href="https://github.com/dboze/scandump-docker" target="_blank" rel="noopener"><code>ghcr.io/dboze/scandump</code></a>.
-              Lets Wi-Fi Explorer Pro's remote-sensor flow (<code>ssh sensor scandump wlan0 -</code>)
-              work transparently. Image is pre-pulled on first boot when
+              <a
+                href="https://github.com/dboze/scandump-docker"
+                target="_blank"
+                rel="noopener"
+                ><code>ghcr.io/dboze/scandump</code></a
+              >. Lets Wi-Fi Explorer Pro's remote-sensor flow (<code
+                >ssh sensor scandump wlan0 -</code
+              >) work transparently. Image is pre-pulled on first boot when
               network is available. Selecting this also installs Docker.
             </p>
           </details>
@@ -268,7 +342,9 @@
           </details>
 
           <div>
-            <button id="sensorbox-build" type="submit" disabled>Build image</button>
+            <button id="sensorbox-build" type="submit" disabled>
+              Build image
+            </button>
           </div>
         </form>
 
@@ -283,7 +359,9 @@
 
         <div id="footer">
           <span>
-            <a href="https://github.com/orbforge/sensorbox">sensorbox on GitHub</a>
+            <a href="https://github.com/orbforge/sensorbox"
+              >sensorbox on GitHub</a
+            >
           </span>
         </div>
       </div>
