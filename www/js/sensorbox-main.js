@@ -409,6 +409,14 @@ async function onSubmit(e) {
     repositories_mode: "append",
     repository_keys: keyContents,
     defaults: defaultsScript,
+    // Rootfs partition size (ImageBuilder ROOTFS_PARTSIZE, in MiB). The
+    // profile default is ~104 MiB, sized for NOR-flash routers; recipes for
+    // SD/eMMC boards set rootfs_size_mb so optional package sets (Docker,
+    // Tailscale) fit and the persistent overlay has real room. Left out
+    // entirely when the recipe has no value, so ASU keeps the default
+    // rather than being sent null. ASU caps this at
+    // MAX_CUSTOM_ROOTFS_SIZE_MB, which sensorbox's compose.yaml raises.
+    ...(recipe.rootfs_size_mb ? { rootfs_size_mb: recipe.rootfs_size_mb } : {}),
   };
 
   submitBuild(buildRequest, recipe);
