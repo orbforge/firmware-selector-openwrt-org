@@ -157,9 +157,8 @@ function wireForm() {
 
 function validateForm() {
   const device = $("#sensorbox-device").value;
-  const token = $("#sensorbox-token").value.trim();
   const rootPw = $("#sensorbox-root-password").value;
-  const valid = !!device && !!token && !!rootPw;
+  const valid = !!device && !!rootPw;
   $("#sensorbox-build").disabled = !valid;
   return valid;
 }
